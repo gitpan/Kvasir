@@ -40,8 +40,8 @@ anoynmous or named.
 
 =item perform
 
-Calls the subroutine an returns its value
+Forwards the call to the wrapped subroutine.
 
 =back
 
-None
+=cut

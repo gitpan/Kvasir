@@ -89,6 +89,8 @@ sub _mk_runloop {
 	my $global = Kvasir::Data->new();
 	    	
 	my $runloop = sub {
+	    $inputs->_clear();
+	    
 		my $local = Kvasir::Data->new();
 		
 		# Process all pre hooks
@@ -186,7 +188,7 @@ __END__
 
 Kvasir::Runloop - Runs engine(s)
 
-==head1 INTERFACE
+=head1 INTERFACE
 
 =head2 CLASS METHODS
 

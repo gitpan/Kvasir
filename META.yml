@@ -1,7 +1,7 @@
 --- #YAML:1.0
 name:                Kvasir
-version:             0.01
-abstract:            General rule engine for analysis and stuff like that
+version:             0.02
+abstract:            Generic rule based processing engine
 license:             MIT
 generated_by:        ExtUtils::MakeMaker version 6.36
 distribution_type:   module

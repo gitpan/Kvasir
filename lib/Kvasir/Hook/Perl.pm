@@ -40,8 +40,8 @@ anoynmous or named.
 
 =item invoke
 
-Calls the subroutine.
+Forwards the call to the wrapped subroutine.
 
 =back
 
-None
+=cut

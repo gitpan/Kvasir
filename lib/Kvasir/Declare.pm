@@ -194,7 +194,7 @@ __END__
 
 =head1 NAME
 
-Kvasir:Declare - Declarative interface for Kvasir engines
+Kvasir::Declare - Declarative interface for Kvasir engines
 
 =head1 SYNOPSIS
 
@@ -216,17 +216,17 @@ Kvasir:Declare - Declarative interface for Kvasir engines
               return KV_MATCH;  
           }
 
-          return KV_CONTINUE;
+          return KV_NO_MATCH;
       }; 
 
       action "action1" => does {
-          my $result = ... complex stuff here ...;
-          $_[KV_LOCAL_DATA]->set("result" => $result);
-      }
+          my $result = complex_calculation();
+          $_[KV_LOCAL]->set("result" => $result);
+      };
             
       prehook "check_date" => does {
           return KV_CONTINUE;
-      }
+      };
       
       run "action1" => when qw(rule1 rule2 rule3);
   };

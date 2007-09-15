@@ -40,8 +40,8 @@ anoynmous or named.
 
 =item evaluate
 
-Calls the subroutine.
+Forwards the call to the wrapped subroutine.
 
 =back
 
-None
+=cut

@@ -54,8 +54,8 @@ Not used.
 
 =item process
 
-Calls the subroutine.
+Forwards the call to the wrapped subroutine.
 
 =back
 
-None
+=cut

@@ -56,11 +56,23 @@ Creates a new instance.
 
 =over 4
 
-=item pre_process ( $global )
+=item pre_process
 
-=item process ( $global, $local )
+Currently not used.
 
-=item post_process ( $global )
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
+
+=item process
+
+Called after each iteration in the runloop.
+
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
+
+=item post_process
+
+Currently not used.
+
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
 
 =back
 

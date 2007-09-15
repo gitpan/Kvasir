@@ -44,6 +44,8 @@ Returns a new instance.
 
 =item invoke
 
-This method is invoked by the engine and should return either VA_ABORT (to stop execution) or VA_CONTINUE.
+Runs the hook. Must return KV_ABORT (to abort processing) or KV_CONTINUE. 
+
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
 
 =cut

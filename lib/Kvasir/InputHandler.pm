@@ -21,7 +21,7 @@ sub _clear {
     my $self = shift;
     
     my $caller = caller;
-    croak "You are not allowed to clear the input" if $caller ne "Kvasir::Engine";
+    croak "You are not allowed to clear the input" if $caller ne "Kvasir::Runloop";
     
     $InputCache{refaddr $self} = {};
 }
@@ -54,7 +54,7 @@ __END__
 
 =head1 NAME
 
-Kvasir::InputManager - Manages input retrieval
+Kvasir::InputHandler - Handles input retrieval
 
 =head1 INTERFACE
 

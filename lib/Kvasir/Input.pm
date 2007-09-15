@@ -44,7 +44,9 @@ Should return a new instance.
 
 =item value
 
-Called by the engine when a value is requested.
+Invoked when a input handler request a value from the instance.
+
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
 
 =back
 

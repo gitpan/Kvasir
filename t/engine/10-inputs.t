@@ -27,7 +27,7 @@ throws_ok {
 
 {
     # Small trick because only Kvasir::Engine may clear inputs
-    package Kvasir::Engine;
+    package Kvasir::Runloop;
     $input->_clear();
 }
 

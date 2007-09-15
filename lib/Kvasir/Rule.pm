@@ -45,7 +45,9 @@ Creates a new instance.
 
 =item evaluate ( $global, $local )
 
-Evaluates the rule.
+Evaluates the rule. Must return either KV_MATCH if the rule matched or KV_NO_MATCH if it didn't.
+
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
 
 =back
  

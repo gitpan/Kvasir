@@ -74,7 +74,7 @@ Used to indicate a rule matched.
 
 =back
 
-=head2 Argument positions
+=head2 Arguments
  
 =over 4
 

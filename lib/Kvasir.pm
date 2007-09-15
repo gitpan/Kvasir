@@ -3,17 +3,59 @@ package Kvasir;
 use strict;
 use warnings;
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 1;
 __END__
 
 =head1 NAME
 
-Kvasir - General rule engine for analysis and stuff like that
+Kvasir - Generic rule based processing engine
 
 =head1 SYNOPSIS
 
+A simple example which just randomizes a number 10 times and outputs it to screen if it was under 500.
+
+  use Kvasir::Constants;
+  use Kvasir::Declare;
+  
+  my $i = 0;
+  
+  my $engine = engine {
+      prehook "check_i" => does {
+          $i++;
+          
+          return KV_ABORT if $i == 10;
+          return KV_CONTINUE;
+      };
+      
+      input "random" => does {
+          return int(rand(1000));
+      };
+      
+      rule "under_500" => does {
+          my $input = $_[KV_INPUT];
+          return KV_MATCH if $input->get("random") < 500;
+          return KV_NO_MATCH;
+      };
+      
+      action "mark_under_500" => does {
+          my ($input, $local) = @_[KV_INPUT, KV_LOCAL];
+          $local->set("output" => $input->get("random") . " was under 500");
+      };
+
+      run "mark_under_500" => when "under_500";
+      
+      output "print" => does {
+          my $local = $_[KV_LOCAL];
+          my $output = $local->get("message");
+          print $output, "\n" if defined $output;
+      };
+  }
+
+A ficional spam filter
+
+  use Kvasir::Constants;
   use Kvasir::Declare;
   
   my $engine = engine {
@@ -37,14 +79,14 @@ Kvasir - General rule engine for analysis and stuff like that
           }
           
           return KV_NO_MATCH;
-      }
+      };
       
       action "mark_for_deletion" => does {
           my $local = $_[KV_LOCAL];
           $local->set("delete-email" => 1);
       };
       
-      trigger "mark_for_deletion"" => when qw(is_spam is_from_boss);
+      run "mark_for_deletion"" => when qw(is_spam is_from_boss);
       
       post_hook "process_mail" => does {
           my ($input, $local) = @_[KV_INPUT, KV_LOCAL];
@@ -77,6 +119,12 @@ an exmaple that could be implemented (with reservations for syntax errors).
 =head2 Declarative interface
 
 L<Kvasir::Declare>
+
+=head2 Loading engines from other sources
+
+Currently creation of engines are only possible using either the declarative interface or by 
+creating C<Kvasir::Engine>-objects directly. Future releases will allow loading of engine declarations 
+via XML and other formats.
 
 =head2 Runloops
 

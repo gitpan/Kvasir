@@ -44,6 +44,10 @@ Returns a new instance.
 
 =item perform
 
+Runs the action. 
+
+For arguments passed to this method see L<Kvasir::Constants/Arguments>.
+
 =back
 
 =cut
