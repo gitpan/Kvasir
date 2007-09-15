@@ -1,0 +1,35 @@
+#!perl
+
+use strict;
+use warnings;
+
+use Test::More tests => 5;
+use Test::Exception;
+
+use Kvasir::Declare;
+
+my $cnt = 0;
+
+my $engine = engine {
+    input "foo1" => does {
+        $cnt++;
+        return $cnt;
+    };
+};
+
+my $input = $engine->_input_handler;
+is($input->get("foo1"), 1);
+is($input->get("foo1"), 1);
+
+throws_ok {
+    $input->_clear();
+} qr/You are not allowed to clear the input/;
+
+{
+    # Small trick because only Kvasir::Engine may clear inputs
+    package Kvasir::Engine;
+    $input->_clear();
+}
+
+is($input->get("foo1"), 2);
+is($input->get("foo1"), 2);
