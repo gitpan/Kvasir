@@ -3,10 +3,11 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 14;
 use Test::Exception;
 
 use Kvasir::Engine;
+use Test::Kvasir::Input;
 
 my $engine = Kvasir::Engine->new();
 
@@ -32,8 +33,8 @@ throws_ok {
 } qr/Input '2554' doesn't look like a valid class name/;
 
 throws_ok {
-	$engine->add_input(foo => bless {}, "Foo");
-} qr/Input 'Foo' is an instance and not a class/;
+	$engine->add_input(Foo => bless {}, "Foo");
+} qr/Input is an instance that does not conform to Kvasir::Input/;
 
 throws_ok {
 	$engine->add_input(Foo => 'Kvasir::Input::NonExistent');
@@ -47,12 +48,20 @@ lives_ok {
 	$engine->add_input(Foo => "Kvasir::Input");
 };
 
+throws_ok {
+	$engine->add_input(Foo => "Kvasir::Input");    
+} qr/Input 'Foo' is already defined/;
+
+lives_ok {
+    $engine->add_input(Bar => Test::Kvasir::Input->new());
+};
+
 # Getting
 my $input = $engine->_get_input("Foo");
-is($input->{pkg}, "Kvasir::Input");
+is($input->_pkg, "Kvasir::Input");
 
 throws_ok {
-	$engine->_get_input("Bar");
-} qr/Can't find input 'Bar'/;
+	$engine->_get_input("Baz");
+} qr/Can't find input 'Baz'/;
 
-is_deeply([$engine->inputs], ['Foo']);
+is_deeply([sort $engine->inputs], [qw(Bar Foo)]);

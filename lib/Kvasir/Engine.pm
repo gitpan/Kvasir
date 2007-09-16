@@ -22,25 +22,26 @@ use Object::Tiny qw(
 	_hooks
 	_inputs
 	_outputs
-	_rule_order
 	_post_hooks
 	_pre_hooks
 	_rules
-
+	_rule_actions
+	_rule_order
 );
 
 sub new {
 	my $pkg = shift;
 
 	my $self = bless {
-		_actions    => Kvasir::Data->new(),
-		_hooks	    => Kvasir::Data->new(),
-		_inputs		=> Kvasir::Data->new(),
-		_outputs    => Kvasir::Data->new(),
-		_post_hooks => [],
-		_pre_hooks  => [],
-		_rules		=> Kvasir::Data->new(),
-		_rule_order => [],
+		_actions        => Kvasir::Data->new(),
+		_hooks	        => Kvasir::Data->new(),
+		_inputs		    => Kvasir::Data->new(),
+		_outputs        => Kvasir::Data->new(),
+		_post_hooks     => [],
+		_pre_hooks      => [],
+		_rules		    => Kvasir::Data->new(),
+		_rule_actions   => Kvasir::Data->new(),
+		_rule_order     => [],
 	}, $pkg;
 		
 	return $self;

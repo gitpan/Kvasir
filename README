@@ -37,12 +37,12 @@ SYNOPSIS
       
           output "print" => does {
               my $local = $_[KV_LOCAL];
-              my $output = $local->get("message");
+              my $output = $local->get("output");
               print $output, "\n" if defined $output;
           };
       }
 
-    A ficional spam filter
+    A fictional spam filter
 
       use Kvasir::Constants;
       use Kvasir::Declare;
@@ -75,7 +75,7 @@ SYNOPSIS
               $local->set("delete-email" => 1);
           };
       
-          run "mark_for_deletion"" => when qw(is_spam is_from_boss);
+          run "mark_for_deletion" => when qw(is_spam is_from_boss);
       
           post_hook "process_mail" => does {
               my ($input, $local) = @_[KV_INPUT, KV_LOCAL];

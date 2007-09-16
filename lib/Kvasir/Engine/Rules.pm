@@ -4,19 +4,21 @@ use warnings;
 use Carp qw(croak);
 
 use Kvasir::Engine::Common;
+use Kvasir::TypeDecl;
 
 sub add_rule {
 	my ($self, $name, $rule, @args) = @_;
     $self->_check_add_args('Rule', \&has_rule, $name, $rule);
-	$self->_rules->set($name => {pkg => $rule, args => \@args, actions => []});
+	$self->_rules->set($name => Kvasir::TypeDecl->new($rule, @args));
+	$self->_rule_actions->set($name => []);
 	push @{$self->_rule_order}, $name;
 }
 
 sub add_rule_action {
     my ($self, $name, $action) = @_;
 
-    my $rule = $self->_get_rule($name);
-    push @{$rule->{actions}}, $action;
+    my $actions = $self->_get_rule_actions($name);
+    push @$actions, $action;
 }
 
 sub rules {
@@ -39,6 +41,16 @@ sub _get_rule {
     croak "Rule '${name}' does not exist";
 }
 
+sub _get_rule_actions {
+    my ($self, $name) = @_;
+    
+    if ($self->has_rule($name)) {
+        return $self->_rule_actions->get($name);
+    }
+    
+    croak "Rule '${name}' does not exist";    
+}
+
 sub set_rule_order {
     my ($self, @order) = @_;
     
@@ -52,3 +64,9 @@ sub rule_order {
 
 1;
 __END__
+
+=head1 DESCRIPTION
+
+Mixin for rules
+
+=cut

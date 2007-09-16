@@ -3,10 +3,11 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 14;
 use Test::Exception;
 
 use Kvasir::Engine;
+use Test::Kvasir::Action;
 
 my $engine = Kvasir::Engine->new();
 
@@ -33,7 +34,7 @@ throws_ok {
 
 throws_ok {
 	$engine->add_action(Foo => bless({}, "Bar"));
-} qr/Action 'Bar' is an instance and not a class/;
+} qr/Action is an instance that does not conform to Kvasir::Action/;
 
 throws_ok {
 	$engine->add_action(Foo => 'Kvasir::Action::NonExistent');
@@ -47,12 +48,20 @@ lives_ok {
 	$engine->add_action(Foo => "Kvasir::Action");
 };
 
+throws_ok {
+	$engine->add_action(Foo => "Kvasir::Action");    
+} qr/Action 'Foo' is already defined/;
+
+lives_ok {
+	$engine->add_action(Bar => Test::Kvasir::Action->new());
+};
+
 # Getting
 my $input = $engine->_get_action("Foo");
-is($input->{pkg}, "Kvasir::Action");
+is($input->_pkg, "Kvasir::Action");
 
 throws_ok {
-	$engine->_get_action("Bar");
-} qr/Can't find action 'Bar'/;
+	$engine->_get_action("Baz");
+} qr/Can't find action 'Baz'/;
 
-is_deeply([$engine->actions], ['Foo']);
+is_deeply([sort $engine->actions], [qw(Bar Foo)]);

@@ -9,12 +9,12 @@ use Kvasir::Engine;
 
 my $engine = Kvasir::Engine->new();
 
-$engine->add_rule(foo => "Test::Kvasir::Rule");
+$engine->add_rule(Foo => "Test::Kvasir::Rule");
 $engine->add_rule(baz => "Test::Kvasir::Rule");
 $engine->add_rule(bar => "Test::Kvasir::Rule");
 
-is_deeply([$engine->rule_order], [qw(foo baz bar)]);
+is_deeply([$engine->rule_order], [qw(Foo baz bar)]);
 
-$engine->set_rule_order(qw(foo bar baz));
+$engine->set_rule_order(qw(Foo bar baz));
 
-is_deeply([$engine->rule_order], [qw(foo bar baz)]);
+is_deeply([$engine->rule_order], [qw(Foo bar baz)]);

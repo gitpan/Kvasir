@@ -3,9 +3,13 @@
 use strict;
 use warnings;
 
-use Test::More tests => 26;
+use Test::More tests => 32;
 
 use Kvasir::Declare;
+use Test::Kvasir::Hook;
+
+my $hook_obj1 = Test::Kvasir::Hook->new();
+my $hook_obj2 = Test::Kvasir::Hook->new();
 
 my $engine = engine {
     prehook "hook1" => instanceof "Test::Kvasir::Hook";
@@ -17,53 +21,68 @@ my $engine = engine {
         1;
     };
 
-    posthook "hook4" => instanceof "Test::Kvasir::Hook";
-    posthook "hook5" => instanceof "Test::Kvasir::Hook" => with_args {
+    prehook "hook4" => $hook_obj1;
+    
+    posthook "hook5" => instanceof "Test::Kvasir::Hook";
+    posthook "hook6" => instanceof "Test::Kvasir::Hook" => with_args {
         start => 10
     };
     
-    posthook "hook6" => does {
+    posthook "hook7" => does {
         1;
     };
+
+    posthook "hook8" => $hook_obj2;
 };
 
 ok($engine->has_hook("hook1"));
 
 my $hook = $engine->_get_hook("hook1");
 ok(defined $hook);
-is($hook->{pkg}, "Test::Kvasir::Hook");
-is_deeply($hook->{args}, []);
+is($hook->_pkg, "Test::Kvasir::Hook");
+is_deeply($hook->_args, []);
 
 ok($engine->has_hook("hook2"));
 $hook = $engine->_get_hook("hook2");
 ok(defined $hook);
-is($hook->{pkg}, "Test::Kvasir::Hook");
-is_deeply($hook->{args}, [{start => 10}]);
+is($hook->_pkg, "Test::Kvasir::Hook");
+is_deeply($hook->_args, [{start => 10}]);
 
 ok($engine->has_hook("hook3"));
 $hook = $engine->_get_hook("hook3");
 ok(defined $hook);
-is($hook->{pkg}, "Kvasir::Hook::Perl");
-is($hook->{args}->[0]->(), 1);
-
-is_deeply($engine->_pre_hooks, [qw(hook1 hook2 hook3)]);
+is($hook->_pkg, "Kvasir::Hook::Perl");
+is($hook->_args->[0]->(), 1);
 
 ok($engine->has_hook("hook4"));
 $hook = $engine->_get_hook("hook4");
 ok(defined $hook);
-is($hook->{pkg}, "Test::Kvasir::Hook");
-is_deeply($hook->{args}, []);
+ok($hook->_pkg == $hook_obj1);
+
+is_deeply($engine->_pre_hooks, [qw(hook1 hook2 hook3 hook4)]);
 
 ok($engine->has_hook("hook5"));
 $hook = $engine->_get_hook("hook5");
 ok(defined $hook);
-is($hook->{pkg}, "Test::Kvasir::Hook");
-is_deeply($hook->{args}, [{start => 10}]);
+is($hook->_pkg, "Test::Kvasir::Hook");
+is_deeply($hook->_args, []);
 
 ok($engine->has_hook("hook6"));
 $hook = $engine->_get_hook("hook6");
 ok(defined $hook);
-is($hook->{pkg}, "Kvasir::Hook::Perl");
-is($hook->{args}->[0]->(), 1);
+is($hook->_pkg, "Test::Kvasir::Hook");
+is_deeply($hook->_args, [{start => 10}]);
 
-is_deeply($engine->_post_hooks, [qw(hook4 hook5 hook6)]);
+ok($engine->has_hook("hook7"));
+$hook = $engine->_get_hook("hook7");
+ok(defined $hook);
+is($hook->_pkg, "Kvasir::Hook::Perl");
+is($hook->_args->[0]->(), 1);
+
+ok($engine->has_hook("hook8"));
+$hook = $engine->_get_hook("hook8");
+ok(defined $hook);
+ok($hook->_pkg == $hook_obj2);
+
+is_deeply($engine->_post_hooks, [qw(hook5 hook6 hook7 hook8)]);
+

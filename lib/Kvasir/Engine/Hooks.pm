@@ -4,11 +4,12 @@ use warnings;
 use Carp qw(croak);
 
 use Kvasir::Engine::Common;
+use Kvasir::TypeDecl;
 
 sub add_hook {
 	my ($self, $name, $hook, @args) = @_;
     $self->_check_add_args('Hook', \&has_hook, $name, $hook);
-	$self->_hooks->{$name} = {pkg => $hook, args => \@args};
+	$self->_hooks->set($name => Kvasir::TypeDecl->new($hook, @args));
 }
 
 sub hooks {
@@ -57,3 +58,9 @@ sub add_post_hook {
 
 1;
 __END__
+
+=head1 DESCRIPTION
+
+Mixin for hooks
+
+=cut

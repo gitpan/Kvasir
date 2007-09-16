@@ -3,9 +3,12 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More tests => 21;
 
 use Kvasir::Declare;
+use Test::Kvasir::Rule;
+
+my $rule_obj = Test::Kvasir::Rule->new();
 
 my $engine = engine {
     rule "rule1" => instanceof "Test::Kvasir::Rule";
@@ -16,6 +19,8 @@ my $engine = engine {
     rule "rule3" => does {
         1;
     };
+    
+    rule "rule4" => $rule_obj;
     
     action "action1" => does {};
     action "action2" => does {};
@@ -29,25 +34,30 @@ my $engine = engine {
 ok($engine->has_rule("rule1"));
 my $rule = $engine->_get_rule("rule1");
 ok(defined $rule);
-is($rule->{pkg}, "Test::Kvasir::Rule");
-is_deeply($rule->{args}, []);
+is($rule->_pkg, "Test::Kvasir::Rule");
+is_deeply($rule->_args, []);
 
 ok($engine->has_rule("rule2"));
 $rule = $engine->_get_rule("rule2");
 ok(defined $rule);
-is($rule->{pkg}, "Test::Kvasir::Rule");
-is_deeply($rule->{args}, [{start => 10}]);
+is($rule->_pkg, "Test::Kvasir::Rule");
+is_deeply($rule->_args, [{start => 10}]);
 
 ok($engine->has_rule("rule3"));
 $rule = $engine->_get_rule("rule3");
 ok(defined $rule);
-is($rule->{pkg}, "Kvasir::Rule::Perl");
-is($rule->{args}->[0]->(), 1);
+is($rule->_pkg, "Kvasir::Rule::Perl");
+is($rule->_args->[0]->(), 1);
+
+ok($engine->has_rule("rule4"));
+$rule = $engine->_get_rule("rule4");
+ok(defined $rule);
+ok($rule->_pkg == $rule_obj);
 
 ok($engine->has_action("action1"));
 ok($engine->has_action("action2"));
 ok($engine->has_action("action3"));
 
-is_deeply($engine->_rules->{rule1}->{actions}, ['action1']);
-is_deeply($engine->_rules->{rule2}->{actions}, ['action1', 'action2']);
-is_deeply($engine->_rules->{rule3}->{actions}, ['action3']);
+is_deeply($engine->_rule_actions->get("rule1"), ['action1']);
+is_deeply($engine->_rule_actions->get("rule2"), ['action1', 'action2']);
+is_deeply($engine->_rule_actions->get("rule3"), ['action3']);

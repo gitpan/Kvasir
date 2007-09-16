@@ -64,27 +64,27 @@ sub _mk_runloop {
     my @rules = @{$engine->_rule_order};
 
     my %action_map  = map {
-        my $rule = $engine->_get_rule($_);
-        $_ => [@{$rule->{actions}}];
+        my $actions = $engine->_get_rule_actions($_);
+        $_ => [@{$actions}];
     } @rules;
     
 	my %rules       = map {
 	    my $rule = $engine->_get_rule($_);
-	    my $rule_obj = $rule->{pkg}->new(@{$rule->{args}});
+	    my $rule_obj = $rule->instantiate();
 	    $_ => $rule_obj;
     } @rules;
     
     my %actions     = map {
         my $action = $engine->_get_action($_);
-        my $action_obj = $action->{pkg}->new(@{$action->{args}});
+        my $action_obj = $action->instantiate();
         $_ => $action_obj;
     } $engine->actions;
     
-	my @pre_hooks	= map { $_->{pkg}->new(@{$_->{args}}) } map { $engine->_get_hook($_) } @{$engine->_pre_hooks};
-	my @post_hooks	= map { $_->{pkg}->new(@{$_->{args}}) } map { $engine->_get_hook($_) } @{$engine->_post_hooks};
+	my @pre_hooks	= map { $_->instantiate(); } map { $engine->_get_hook($_) } @{$engine->_pre_hooks};
+	my @post_hooks	= map { $_->instantiate(); } map { $engine->_get_hook($_) } @{$engine->_post_hooks};
 
 	my $inputs		= $engine->_input_handler;
-	my @outputs		= map { $_->{pkg}->new(@{$_->{args}}) } map { $engine->_get_output($_) } sort $engine->outputs;
+	my @outputs		= map { $_->instantiate(); } map { $engine->_get_output($_) } sort $engine->outputs;
 	
 	my $global = Kvasir::Data->new();
 	    	

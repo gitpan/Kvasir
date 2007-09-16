@@ -26,6 +26,7 @@ lib/Kvasir/Output/Perl.pm
 lib/Kvasir/Rule.pm
 lib/Kvasir/Rule/Perl.pm
 lib/Kvasir/Runloop.pm
+lib/Kvasir/TypeDecl.pm
 lib/Kvasir/Util.pm
 lib/Test/Kvasir/Action.pm
 lib/Test/Kvasir/Hook.pm

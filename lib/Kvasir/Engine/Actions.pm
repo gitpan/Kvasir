@@ -4,11 +4,12 @@ use warnings;
 use Carp qw(croak);
 
 use Kvasir::Engine::Common;
+use Kvasir::TypeDecl;
 
 sub add_action {
 	my ($self, $name, $action, @args) = @_;
 	$self->_check_add_args('Action', \&has_action, $name, $action);
-	$self->_actions->set($name => {pkg => $action, args => \@args});
+	$self->_actions->set($name => Kvasir::TypeDecl->new($action, @args));
 }
 
 sub actions {
@@ -33,3 +34,9 @@ sub _get_action {
 
 1;
 __END__
+
+=head1 DESCRIPTION
+
+Mixin for actions
+
+=cut

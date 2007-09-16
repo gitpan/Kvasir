@@ -1,5 +1,3 @@
-package Kvasir::Engine;
-
 use strict;
 use warnings;
 
@@ -17,7 +15,7 @@ sub _check_add_args {
 	croak "${type} '${name}' is already defined" if $has->($self, $name);
 	
 	if (blessed $obj) {
-		croak "${type} '", ref($obj), "' is an instance and not a class name";
+		croak "${type} is an instance that does not conform to Kvasir::${type}" if !$obj->isa("Kvasir::${type}");
 	}
 	else {
 		croak "${type} '${obj}' doesn't look like a valid class name" if !is_valid_package_name($obj);
@@ -33,8 +31,8 @@ sub _check_add_args {
 1;
 __END__
 
-=head1 NAME
+=head1 DESCRIPTION
 
-Kvasir::Engine (Common) - Common private methods for the engine
+Mixin for common utils
 
 =cut

@@ -121,8 +121,9 @@ sub run(@) {
 
 sub _get_command {
     my $kind = shift;
+    my $base_class = shift;
     my $does_class = shift;
-        
+    
     croak "Can't use keyword '${kind}' outside an engine declaration" if !$current_engine;
         
     my @isa = grep { blessed $_ && $_->isa('_InstanceOf') } @_;
@@ -134,6 +135,7 @@ sub _get_command {
     my @does = grep { blessed $_ && $_->isa('_Does') } @_;
     croak "Multiple 'does' declared" if @does > 1;
     
+    my $instance = shift;
     my $cmd;
 
     if (@isa) {
@@ -144,8 +146,11 @@ sub _get_command {
         @args = (shift @does)->[0];
         $cmd = $does_class;
     }
+    elsif ($instance && blessed $instance && $instance->isa($base_class)) {
+        $cmd = $instance;
+    }
     else {
-        croak "Can't fingure out how to create ${kind} because we have neither 'instanceof' nor 'does'";
+        croak "Can't fingure out how to create ${kind} because we have neither 'instanceof', 'does' nor an instance";
     }
     
     return ($cmd, @args);
@@ -153,39 +158,39 @@ sub _get_command {
 
 sub action ($@) {
     my $name = shift;    
-    my ($action, @args) = _get_command("action", "Kvasir::Action::Perl", @_);    
+    my ($action, @args) = _get_command("action", "Kvasir::Action", "Kvasir::Action::Perl", @_);    
     $current_engine->add_action($name => $action, @args);
 }
 
 sub input ($@) {
     my $name = shift;
-    my ($input, @args) = _get_command("input", "Kvasir::Input::Perl", @_);    
+    my ($input, @args) = _get_command("input", "Kvasir::Input", "Kvasir::Input::Perl", @_);    
     $current_engine->add_input($name => $input, @args);
 }
 
 sub output ($@) {
     my $name = shift;
-    my ($output, @args) = _get_command("output", "Kvasir::Output::Perl", @_);    
+    my ($output, @args) = _get_command("output", "Kvasir::Output", "Kvasir::Output::Perl", @_);    
     $current_engine->add_output($name => $output, @args);
 }
 
 sub prehook ($@) {
     my $name = shift;    
-    my ($hook, @args) = _get_command("prehook", "Kvasir::Hook::Perl", @_);    
+    my ($hook, @args) = _get_command("prehook", "Kvasir::Hook", "Kvasir::Hook::Perl", @_);    
     $current_engine->add_hook($name => $hook, @args);
     $current_engine->add_pre_hook($name);
 }
 
 sub posthook ($@) {
     my $name = shift;    
-    my ($hook, @args) = _get_command("posthook", "Kvasir::Hook::Perl", @_);    
+    my ($hook, @args) = _get_command("posthook", "Kvasir::Hook", "Kvasir::Hook::Perl", @_);    
     $current_engine->add_hook($name => $hook, @args);
     $current_engine->add_post_hook($name);
 }
 
 sub rule ($@) {
     my $name = shift;    
-    my ($rule, @args) = _get_command("rule", "Kvasir::Rule::Perl", @_);    
+    my ($rule, @args) = _get_command("rule", "Kvasir::Rule", "Kvasir::Rule::Perl", @_);    
     $current_engine->add_rule($name => $rule, @args);
 }
 
@@ -201,12 +206,15 @@ Kvasir::Declare - Declarative interface for Kvasir engines
   use Kvasir::Constants;
   use Kvasir::Declare;
   
+  my $input = MyApp::MyOtherInput->new();
+  my $rule  = MyApp::ComplexRule->new();
+  
   my $engine = engine {
       input "input1" => instanceof "MyApp::Input";
-      input "input2" => instanceof "MyApp::OtherInput";
+      input "input2" => $input;
 
       rule "rule1" => instanceof "MyApp::Rule" => with_args { input => "input1" };
-      rule "rule2" => instanceof "MyApp::Rule" => with_args { input => "input2" };
+      rule "rule2" => $rule;
 
       rule "rule3" => does {
           my ($input, $global, $local) = @_[KV_INPUT, KV_GLOBAL_DATA, KV_LOCAL_DATA];
@@ -245,43 +253,61 @@ Creates a new engine.
 
 =item action NAME [=> instanceof CLASS [ => with_args ARGS]]
 
+=item action NAME => INSTANCE
+
 =item action NAME => does BLOCK
 
-Creates a new action and registers it in the engine as I<NAME>.
+Creates a new action and registers it in the engine as I<NAME>. If an object is 
+passed it must conform to C<Kvasir::Action>.
 
 =item input NAME [=> instanceof CLASS [ => with_args ARGS]]
 
+=item input NAME => INSTANCE
+
 =item input NAME => does BLOCK
 
-Creates a new input and registers it in the engine as I<NAME>.
+Creates a new input and registers it in the engine as I<NAME>. If an object is 
+passed it must conform to C<Kvasir::Input>.
 
 =item output NAME [=> instanceof CLASS [ => with_args ARGS]]
 
+=item output NAME => INSTANCE
+
 =item output NAME => does BLOCK
 
-Creates a new output and registers it in the engine as I<NAME>.
+Creates a new output and registers it in the engine as I<NAME>. If an object is 
+passed it must conform to C<Kvasir::Output>.
 
 =item prehook NAME [=> instanceof CLASS [ => with_args ARGS]]
 
+=item prehook NAME => INSTANCE
+
 =item prehook NAME => does BLOCK
 
-Creates a new prehook and registers it in the engine as I<NAME>.
+Creates a new prehook and registers it in the engine as I<NAME>. If an object is 
+passed it must conform to C<Kvasir::Hook>.
 
 Prehooks are evaulated in the order they are declared.
 
 =item posthook NAME [=> instanceof CLASS [ => with_args ARGS]]
 
+=item posthook NAME => INSTANCE
+
 =item posthook NAME => does BLOCK
 
-Creates a new posthook and registers it in the engine as I<NAME>.
+Creates a new posthook and registers it in the engine as I<NAME>. If an object is 
+passed it must conform to C<Kvasir::Hook>.
 
 Posthooks are evaulated in the order they are declared.
 
 =item rule NAME [=> instanceof CLASS [ => with_args ARGS]]
 
+=item rule NAME => INSTANCE
+
 =item rule NAME => does BLOCK
 
-Creates a new rule and registers it in the engine as I<NAME>.
+Creates a new rule and registers it in the engine as I<NAME>. If an object is 
+passed it must conform to C<Kvasir::Rule>.
 
 Rules are evaulated in the order they are declared unless an order has 
 explicitly been defined using C<rule_order>. d

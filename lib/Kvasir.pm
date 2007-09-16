@@ -3,7 +3,7 @@ package Kvasir;
 use strict;
 use warnings;
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 1;
 __END__
@@ -48,12 +48,12 @@ A simple example which just randomizes a number 10 times and outputs it to scree
       
       output "print" => does {
           my $local = $_[KV_LOCAL];
-          my $output = $local->get("message");
+          my $output = $local->get("output");
           print $output, "\n" if defined $output;
       };
   }
 
-A ficional spam filter
+A fictional spam filter
 
   use Kvasir::Constants;
   use Kvasir::Declare;
@@ -86,7 +86,7 @@ A ficional spam filter
           $local->set("delete-email" => 1);
       };
       
-      run "mark_for_deletion"" => when qw(is_spam is_from_boss);
+      run "mark_for_deletion" => when qw(is_spam is_from_boss);
       
       post_hook "process_mail" => does {
           my ($input, $local) = @_[KV_INPUT, KV_LOCAL];

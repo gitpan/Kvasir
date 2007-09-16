@@ -11,15 +11,15 @@ use Kvasir::Declare;
 my $cnt = 0;
 
 my $engine = engine {
-    input "foo1" => does {
+    input "Foo1" => does {
         $cnt++;
         return $cnt;
     };
 };
 
 my $input = $engine->_input_handler;
-is($input->get("foo1"), 1);
-is($input->get("foo1"), 1);
+is($input->get("Foo1"), 1);
+is($input->get("Foo1"), 1);
 
 throws_ok {
     $input->_clear();
@@ -31,5 +31,5 @@ throws_ok {
     $input->_clear();
 }
 
-is($input->get("foo1"), 2);
-is($input->get("foo1"), 2);
+is($input->get("Foo1"), 2);
+is($input->get("Foo1"), 2);

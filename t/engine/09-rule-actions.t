@@ -13,12 +13,12 @@ use Kvasir::Action::Perl;
 my $engine = Kvasir::Engine->new();
 
 $engine->add_rule("rule1" => "Kvasir::Rule::Perl" => sub {});
-is_deeply($engine->_get_rule("rule1")->{actions}, []);
+is_deeply($engine->_get_rule_actions("rule1"), []);
 
 $engine->add_action("action1" => "Kvasir::Action::Perl" => sub {});
 
 $engine->add_rule_action("rule1" => "action1");
-is_deeply($engine->_get_rule("rule1")->{actions}, [qw(action1)]);
+is_deeply($engine->_get_rule_actions("rule1"), [qw(action1)]);
 
 throws_ok {
     $engine->add_rule_action("rule2" => "action2");

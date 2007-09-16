@@ -3,10 +3,11 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 14;
 use Test::Exception;
 
 use Kvasir::Engine;
+use Test::Kvasir::Rule;
 
 my $engine = Kvasir::Engine->new();
 
@@ -33,7 +34,7 @@ throws_ok {
 
 throws_ok {
 	$engine->add_rule(Foo => bless({}, "Bar"));
-} qr/Rule 'Bar' is an instance and not a class/;
+} qr/Rule is an instance that does not conform to Kvasir::Rule/;
 
 throws_ok {
 	$engine->add_rule(Foo => 'Kvasir::Rule::NonExistent');
@@ -47,13 +48,21 @@ lives_ok {
 	$engine->add_rule(Foo => "Kvasir::Rule");
 };
 
+throws_ok {
+	$engine->add_rule(Foo => "Kvasir::Rule");    
+} qr/Rule 'Foo' is already defined/;
+
+lives_ok {
+	$engine->add_rule(Bar => Test::Kvasir::Rule->new());
+};
+
 # Getting
 my $input = $engine->_get_rule("Foo");
-is_deeply($input, {pkg => 'Kvasir::Rule', args => [], actions => []});
+isa_ok($input, "Kvasir::TypeDecl");
 
 throws_ok {
-	$engine->_get_rule("Bar");
-} qr/Rule 'Bar' does not exist/;
+	$engine->_get_rule("Baz");
+} qr/Rule 'Baz' does not exist/;
 
-is_deeply([$engine->rules], ['Foo']);
+is_deeply([sort $engine->rules], [qw(Bar Foo)]);
 

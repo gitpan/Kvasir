@@ -4,11 +4,12 @@ use warnings;
 use Carp qw(croak);
 
 use Kvasir::Engine::Common;
+use Kvasir::TypeDecl;
 
 sub add_output {
 	my ($self, $name, $output, @args) = @_;
     $self->_check_add_args('Output', \&has_output, $name, $output);
-	$self->_outputs->set($name => {pkg => $output, args => \@args});
+	$self->_outputs->set($name => Kvasir::TypeDecl->new($output, @args));
 }
 
 sub outputs {
@@ -33,3 +34,9 @@ sub _get_output {
 
 1;
 __END__
+
+=head1 DESCRIPTION
+
+Mixin for outputs
+
+=cut

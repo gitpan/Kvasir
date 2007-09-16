@@ -5,11 +5,12 @@ use Carp qw(croak);
 
 use Kvasir::Engine::Common;
 use Kvasir::InputHandler;
+use Kvasir::TypeDecl;
 
 sub add_input {
 	my ($self, $name, $input, @args) = @_;
 	$self->_check_add_args('Input', \&has_input, $name, $input);
-	$self->_inputs->set($name => {pkg => $input, args => \@args});
+	$self->_inputs->set($name => Kvasir::TypeDecl->new($input, @args));
 }
 
 sub inputs {
@@ -36,7 +37,7 @@ sub _input_handler {
     my $self = shift;
     my %inputs = map { 
         my $input = $self->_get_input($_);
-        $_ => $input->{pkg}->new(@{$input->{args}})
+        $_ => $input->instantiate();
      } $self->inputs;
     my $handler = Kvasir::InputHandler->new(%inputs);
     return $handler;
@@ -45,3 +46,9 @@ sub _input_handler {
 
 1;
 __END__
+
+=head1 DESCRIPTION
+
+Mixin for hooks
+
+=cut
