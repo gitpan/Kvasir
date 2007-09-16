@@ -25,7 +25,7 @@ __END__
 
 =head1 NAME
 
-Kvasir::Rule - Interface for rules
+Kvasir::Rule - Interface for rules.
 
 =head1 INTERFACE
 
@@ -35,7 +35,7 @@ Kvasir::Rule - Interface for rules
 
 =item new
 
-Creates a new instance.
+Called when a new instance is requested.
 
 =back
 
@@ -43,7 +43,7 @@ Creates a new instance.
 
 =over 4
 
-=item evaluate ( $global, $local )
+=item evaluate
 
 Evaluates the rule. Must return either KV_MATCH if the rule matched or KV_NO_MATCH if it didn't.
 

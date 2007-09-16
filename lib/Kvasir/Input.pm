@@ -24,7 +24,7 @@ __END__
 
 =head1 NAME
 
-Kvasir::Input - Base class for providers of rule data
+Kvasir::Input - Interface for inputs.
 
 =head1 INTERFACE
 
@@ -34,7 +34,7 @@ Kvasir::Input - Base class for providers of rule data
 
 =item new 
 
-Should return a new instance.
+Called when a new instance is requested.
 
 =back
 

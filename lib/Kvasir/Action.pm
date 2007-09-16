@@ -24,7 +24,7 @@ __END__
 
 =head1 NAME
 
-Kvasir::Action - Base class for actions
+Kvasir::Action - Interface for actions.
 
 =head1 INTERFACE
 
@@ -34,7 +34,7 @@ Kvasir::Action - Base class for actions
 
 =item new 
 
-Returns a new instance.
+Called when a new instance is requested.
 
 =back
 

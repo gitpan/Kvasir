@@ -60,7 +60,24 @@ __END__
 
 =head1 NAME
 
-Kvasir::Engine - Analysis worker
+Kvasir::Engine - Engine declaration
+
+=head1 SYNOPSIS
+
+  use Kvasir::Engine;
+  
+  my $engine = Kvasir::Engine->new();
+  $engine->add_hook(hook1 => "MyApp::GetMoreData");
+  $engine->add_rule(rule1 => "MyApp::Rule");
+  $engine->add_action(action1 => "MyApp::Action");
+  $engine->add_rule_action(rule1 => "action1");
+  $engine->run();
+  
+=head1 DESCRIPTION
+
+This class defines a Kvasir "engine". Altho it is possible using this class directly it 
+is more readable using the declarative interface in L<Kvasir::Declare> or loading engines 
+using an engine loader class (which is currently not available).
 
 =head1 INTERFACE
 
@@ -70,7 +87,7 @@ Kvasir::Engine - Analysis worker
 
 =item new
 
-Creates a new worker.
+Creates a new engine.
 
 =back
 
@@ -78,21 +95,9 @@ Creates a new worker.
 
 =over 4
 
-=item add_rule ( $rule )
-
-Adds a rule to the worker.
-
-=item add_pre_hook ( $callback )
-
-Adds a new hook that is run before every iteration.
-
-=item add_post_hook ( $callback )
-
-Adds a new hook that is run after every iteration.
-
 =item run ( $work_callback )
 
-Runs the worker.
+Runs the engine.
 
 =back
 

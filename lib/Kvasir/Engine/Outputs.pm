@@ -1,5 +1,3 @@
-package Kvasir::Engine;
-
 use strict;
 use warnings;
 
@@ -35,13 +33,3 @@ sub _get_output {
 
 1;
 __END__
-
-=head1 NAME
-
-Kvasir::Engine (Output) - Output management
-
-=head1 SEE ALSO
-
-L<Kvasir::Engine>.
-
-=cut

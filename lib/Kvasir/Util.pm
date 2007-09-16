@@ -51,7 +51,7 @@ Kvasir::Util - Utility functions for Kvasir
 
 =item is_existing_package ( PACKAGE )
 
-Checks if the package I<PACKAGE> exists or not.
+Checks if the package I<PACKAGE> is defined or not.
 
 =item is_valid_name ( NAME )
 
@@ -62,5 +62,9 @@ Checks if the given I<NAME> is a valid name to assign inputs, outputs, hooks, ru
 Checks if the given I<NAME> is a valid package name or not.
 
 =back
+
+=head1 EXPORTS
+
+Nonething by default.
 
 =cut

@@ -24,7 +24,7 @@ __END__
 
 =head1 NAME
 
-Kvasir::Hook - Base class for engine hooks
+Kvasir::Hook - Interface for hooks.
 
 =head1 INTERFACE
 
@@ -34,7 +34,7 @@ Kvasir::Hook - Base class for engine hooks
 
 =item new 
 
-Returns a new instance.
+Called when a new instance is requested.
 
 =back
 

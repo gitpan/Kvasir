@@ -188,6 +188,30 @@ __END__
 
 Kvasir::Runloop - Runs engine(s)
 
+=head1 SYNOPSIS
+
+  use Kvasir::Runloop;
+  
+  my $engine1 = MyApp::Engine->get_engine();
+  my $engine2 = MyApp::Engine->get_another_engine();
+  
+  my $runloop = Kvasir::Runloop->new();
+  $runloop->add_engine($engine1);
+  $runloop->add_engine($engine2);
+
+  # Run the two engines until there's no more processing
+  # to be done in either of them
+  $runloop->run();
+  
+=head1 DESCRIPTION
+
+This class converts engine descriptions (C<Kvasir::Engine>-instances) into something 
+runnable and executes them.
+
+If multiple engines are defined in a single runloop execution will continue until no
+engines have anything ore to process. Engines that report they are done processing are 
+removed from the runloop.
+
 =head1 INTERFACE
 
 =head2 CLASS METHODS
@@ -215,8 +239,8 @@ the runloop to work. It called automaticly by C<run>.
 
 =item step
 
-Performs one iteration in the runloop. Returns 0 when there is no 
-more work to perform.
+Performs one iteration in the runloop. Returns the number of engines 
+that are still in the runloop. When there is no more work to be done it returns 0.
 
 =item run
 

@@ -1,5 +1,3 @@
-package Kvasir::Engine;
-
 use strict;
 use warnings;
 
@@ -54,13 +52,3 @@ sub rule_order {
 
 1;
 __END__
-
-=head1 NAME
-
-Kvasir::Engine (Rule) - Rule management
-
-=head1 SEE ALSO
-
-L<Kvasir::Engine>.
-
-=cut

@@ -1,5 +1,3 @@
-package Kvasir::Engine;
-
 use strict;
 use warnings;
 
@@ -47,13 +45,3 @@ sub _input_handler {
 
 1;
 __END__
-
-=head1 NAME
-
-Kvasir::Engine (Input) - Input management
-
-=head1 SEE ALSO
-
-L<Kvasir::Engine>.
-
-=cut

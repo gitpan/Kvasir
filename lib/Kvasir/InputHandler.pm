@@ -56,6 +56,30 @@ __END__
 
 Kvasir::InputHandler - Handles input retrieval
 
+=head1 SYNOPSIS
+
+  package MyApp::Rule;
+  
+  use base qw(Kvasir::Rule);
+  
+  # ... constructors etc ...
+  
+  sub evaluate {
+      # Retrieve the current input handler for the executing engine
+      my ($input) = @_[KV_INPUT];
+      
+      # Retrieve the current value from the input 'some_input' 
+      if ($input->get("some_input") > 10) {
+          return KV_MATCH;
+      }
+      
+      return KV_NO_MATCH;
+  }
+  
+=head1 DESCRIPTION
+
+This class handles input retrieval for an engine. It should not be instanciated by users.
+
 =head1 INTERFACE
 
 =head2 CLASS METHODS
@@ -77,7 +101,5 @@ Creates a new input manager for the given I<INPUTS>. I<INPUTS> must be a list of
 Retrieves the value from the input whose name is I<INPUT>. If the input does not exist an exception is thrown.
 
 =back
-
-None
 
 =cut

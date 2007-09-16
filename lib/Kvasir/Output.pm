@@ -38,7 +38,7 @@ __END__
 
 =head1 NAME
 
-Kvasir::Output - Interface for output classes
+Kvasir::Output - Interface for outputs.
 
 =head1 INTERFACE
 
@@ -48,7 +48,7 @@ Kvasir::Output - Interface for output classes
 
 =item new
 
-Creates a new instance.
+Called when a new instance is requested.
 
 =back
 

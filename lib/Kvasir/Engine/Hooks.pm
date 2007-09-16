@@ -1,5 +1,3 @@
-package Kvasir::Engine;
-
 use strict;
 use warnings;
 
@@ -59,13 +57,3 @@ sub add_post_hook {
 
 1;
 __END__
-
-=head1 NAME
-
-Kvasir::Engine (Hook) - Hook management
-
-=head1 SEE ALSO
-
-L<Kvasir::Engine>.
-
-=cut

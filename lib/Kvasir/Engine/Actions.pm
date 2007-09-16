@@ -1,5 +1,3 @@
-package Kvasir::Engine;
-
 use strict;
 use warnings;
 
@@ -35,13 +33,3 @@ sub _get_action {
 
 1;
 __END__
-
-=head1 NAME
-
-Kvasir::Engine (Action) - Action management
-
-=head1 SEE ALSO
-
-L<Kvasir::Engine>.
-
-=cut
