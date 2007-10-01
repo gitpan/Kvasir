@@ -39,3 +39,4 @@ lives_ok {
 throws_ok {
     $runloop->add_engine($engine);
 } qr/Engine already exists/;
+

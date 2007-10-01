@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 12;
 
 use Kvasir::Constants;
 use Kvasir::Engine;
@@ -38,6 +38,7 @@ $engine->add_hook(hook1 => "Kvasir::Hook::Perl" => sub {
 });
 
 $engine->add_pre_hook("hook1");
+$engine->add_post_hook("hook1");
 
 $cb = Kvasir::Runloop::_mk_runloop($engine);
 $cb->();

@@ -31,9 +31,10 @@ sub is_valid_package_name {
 }
 
 sub is_existing_package {
-    my $pkg = pop;
+    my $package = pop;
     no strict 'refs';
-    return defined %{"${pkg}::"} ? 1 : 0;
+    my $exists = defined *{$package . '::'} ? 1 : 0;
+    return $exists;
 }
 
 1;

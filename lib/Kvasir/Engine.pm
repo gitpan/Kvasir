@@ -49,10 +49,11 @@ sub new {
 
 sub run {
 	my $self = shift;
-	    
+	my $global = shift;
+	
     my $runloop = Kvasir::Runloop->new();
 
-    $runloop->add_engine($self);
+    $runloop->add_engine($self, $global);
     $runloop->run();
 }
 

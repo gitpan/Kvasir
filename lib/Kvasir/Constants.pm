@@ -22,13 +22,13 @@ our @EXPORT = qw(
     KV_ABORT
     KV_CONTINUE
     
-    KV_NO_MATCH
     KV_MATCH
+    KV_NO_MATCH
     
-    KV_SELF
-    KV_INPUT
     KV_GLOBAL
+    KV_INPUT
     KV_LOCAL
+    KV_SELF
 );
 
 our @EXPORT_OK = @EXPORT;

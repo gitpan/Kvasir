@@ -3,7 +3,7 @@ use warnings;
 
 use Scalar::Util qw(blessed);
 
-use Kvasir::Util qw(is_valid_name is_valid_package_name);
+use Kvasir::Util qw(is_valid_name is_valid_package_name is_existing_package);
 
 sub _check_add_args {
     my ($self, $type, $has, $name, $obj) = @_;
@@ -19,8 +19,10 @@ sub _check_add_args {
 	}
 	else {
 		croak "${type} '${obj}' doesn't look like a valid class name" if !is_valid_package_name($obj);
-		eval "require ${obj};";
-		croak $@ if $@;
+		if (!is_existing_package($obj)) {
+		    eval "require ${obj};";
+		    croak $@ if $@;
+		}
 		
 		croak "${type} '${obj}' does not conform to Kvasir::${type}" if !UNIVERSAL::isa($obj, "Kvasir::${type}");
 	}

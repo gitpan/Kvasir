@@ -33,14 +33,14 @@ sub DESTROY {
 }
 
 sub add_engine {
-    my ($self, $engine) = @_;
+    my ($self, $engine, $global) = @_;
     
     croak "Engine is undefined" if !defined $engine;
     croak "Engine is not a Kvasir::Engine instance" if !(blessed $engine && $engine->isa("Kvasir::Engine"));
     
     my $engines = $Engine{$$self};
-    if (!first { $_ == $engine } @$engines) {
-        push @$engines, $engine;
+    if (!first { $_->[0] == $engine } @$engines) {
+        push @$engines, [$engine, $global];
     }
     else {
         croak "Engine already exists";
@@ -53,14 +53,15 @@ sub init {
     return if $Initialized{$$self};
     
     foreach my $engine (@{$Engine{$$self}}) {
-        my $runloop = _mk_runloop($engine);
+        my $runloop = _mk_runloop($engine->[0], $engine->[1]);
         $self->_register_runloop($runloop);
     }
 }
 
 sub _mk_runloop {
     my $engine = shift;
-
+    my $global = shift;
+    
     my @rules = @{$engine->_rule_order};
 
     my %action_map  = map {
@@ -85,13 +86,17 @@ sub _mk_runloop {
 
 	my $inputs		= $engine->_input_handler;
 	my @outputs		= map { $_->instantiate(); } map { $engine->_get_output($_) } sort $engine->outputs;
-	
-	my $global = Kvasir::Data->new();
-	    	
+
+	$global = $global || Kvasir::Data->new();
+	    
+	$inputs->set_global($global);
+
 	my $runloop = sub {
 	    $inputs->_clear();
 	    
 		my $local = Kvasir::Data->new();
+		
+		$inputs->set_local($local);
 		
 		# Process all pre hooks
 		for my $hook (@pre_hooks) {
@@ -123,7 +128,7 @@ sub _mk_runloop {
 		
 		# Process all post hooks
 		for my $hook (@post_hooks) {
-			my $result = $hook->invoke($hook, $inputs, $global, $local);
+			my $result = $hook->invoke($inputs, $global, $local);
 			return KV_ABORT if $result == KV_ABORT;
 		}
 		
@@ -228,9 +233,11 @@ Creates a new runloop instance.
 
 =over 4
 
-=item add_engine ( ENGINE )
+=item add_engine ( ENGINE [, GLOBALS] )
 
-Adds an engine to the runloop.
+Adds an engine to the runloop. An optional Kvasir::Data instance can be passed 
+as global data for the engine. If omitted a empty Kvasir::Data instance will be 
+created and used as global.
 
 =item init
 
