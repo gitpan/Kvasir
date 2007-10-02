@@ -5,6 +5,8 @@ use warnings;
 
 use Test::More tests => 2;
 
+use lib 't/lib';
+
 use Kvasir::Engine;
 
 my $engine = Kvasir::Engine->new();

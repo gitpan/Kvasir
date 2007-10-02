@@ -6,6 +6,9 @@ use warnings;
 use Test::More tests => 32;
 
 use Kvasir::Declare;
+
+use lib 't/lib';
+
 use Test::Kvasir::Hook;
 
 my $hook_obj1 = Test::Kvasir::Hook->new();

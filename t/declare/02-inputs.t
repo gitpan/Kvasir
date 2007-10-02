@@ -6,6 +6,9 @@ use warnings;
 use Test::More tests => 15;
 
 use Kvasir::Declare;
+
+use lib 't/lib';
+
 use Test::Kvasir::Input;
 
 my $input_obj = Test::Kvasir::Input->new();

@@ -7,6 +7,9 @@ use Test::More tests => 11;
 use Test::Exception;
 
 use Kvasir::Engine;
+
+use lib 't/lib';
+
 use Test::Kvasir::Hook;
 
 my $engine = Kvasir::Engine->new();

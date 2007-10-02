@@ -6,6 +6,9 @@ use warnings;
 use Test::More tests => 21;
 
 use Kvasir::Declare;
+
+use lib 't/lib';
+
 use Test::Kvasir::Rule;
 
 my $rule_obj = Test::Kvasir::Rule->new();

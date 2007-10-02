@@ -1,3 +1,9 @@
+[Changes for 0.06 - 2007-10-02]
+
+* Don't install Test::Kvasir::*
+* Doesn't require the non-existing Perl 5.6.20 (5.00602) anymore. Spotted by David Cantrell [BUG]
+* Added generic rules InputMatchesRegexp, InputOverThreshold and InputUnderThreshold
+
 [Changes for 0.05 - 2007-10-01]
 
 * Don't try to require a package if it's already defined [BUG]

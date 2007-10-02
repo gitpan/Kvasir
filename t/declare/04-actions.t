@@ -6,6 +6,9 @@ use warnings;
 use Test::More tests => 15;
 
 use Kvasir::Declare;
+
+use lib 't/lib';
+
 use Test::Kvasir::Action;
 
 my $action_obj = Test::Kvasir::Action->new();
