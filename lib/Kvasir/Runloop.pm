@@ -71,21 +71,21 @@ sub _mk_runloop {
     
 	my %rules       = map {
 	    my $rule = $engine->_get_rule($_);
-	    my $rule_obj = $rule->instantiate();
+	    my $rule_obj = $rule->instantiate($engine);
 	    $_ => $rule_obj;
     } @rules;
     
     my %actions     = map {
         my $action = $engine->_get_action($_);
-        my $action_obj = $action->instantiate();
+        my $action_obj = $action->instantiate($engine);
         $_ => $action_obj;
     } $engine->actions;
     
-	my @pre_hooks	= map { $_->instantiate(); } map { $engine->_get_hook($_) } @{$engine->_pre_hooks};
-	my @post_hooks	= map { $_->instantiate(); } map { $engine->_get_hook($_) } @{$engine->_post_hooks};
+	my @pre_hooks	= map { $_->instantiate($engine); } map { $engine->_get_hook($_) } @{$engine->_pre_hooks};
+	my @post_hooks	= map { $_->instantiate($engine); } map { $engine->_get_hook($_) } @{$engine->_post_hooks};
 
 	my $inputs		= $engine->_input_handler;
-	my @outputs		= map { $_->instantiate(); } map { $engine->_get_output($_) } sort $engine->outputs;
+	my @outputs		= map { $_->instantiate($engine); } map { $engine->_get_output($_) } sort $engine->outputs;
 
 	$global = $global || Kvasir::Data->new();
 	    

@@ -7,9 +7,9 @@ use Kvasir::Engine::Common;
 use Kvasir::TypeDecl;
 
 sub add_rule {
-	my ($self, $name, $rule, @args) = @_;
+	my ($self, $name, $rule, $defaults, @args) = @_;
     $self->_check_add_args('Rule', \&has_rule, $name, $rule);
-	$self->_rules->set($name => Kvasir::TypeDecl->new($rule, @args));
+	$self->_rules->set($name => Kvasir::TypeDecl->new($rule, $defaults, @args));
 	$self->_rule_actions->set($name => []);
 	push @{$self->_rule_order}, $name;
 }

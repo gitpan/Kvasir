@@ -7,9 +7,9 @@ use Kvasir::Engine::Common;
 use Kvasir::TypeDecl;
 
 sub add_hook {
-	my ($self, $name, $hook, @args) = @_;
+	my ($self, $name, $hook, $defaults, @args) = @_;
     $self->_check_add_args('Hook', \&has_hook, $name, $hook);
-	$self->_hooks->set($name => Kvasir::TypeDecl->new($hook, @args));
+	$self->_hooks->set($name => Kvasir::TypeDecl->new($hook, $defaults, @args));
 }
 
 sub hooks {

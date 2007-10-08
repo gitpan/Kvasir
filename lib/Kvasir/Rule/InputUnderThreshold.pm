@@ -8,8 +8,8 @@ use Kvasir::Constants;
 use base qw(Kvasir::Rule);
 
 sub new {
-    my ($pkg, $args) = @_;
-    my $self = bless { %$args }, $pkg;
+    my ($pkg, %args) = @_;
+    my $self = bless { %args }, $pkg;
     return $self;
 }
 
@@ -40,14 +40,14 @@ sub evaluate {
 
 =head1 NAME
 
-Kvasir::Rule::InputOverThreshold - Generic rule for checking input distances
+Kvasir::Rule::InputUnderThreshold - Generic rule for checking input thresholds
 
 =head1 SYNOPSIS
 
   use Kvasir::Declare;
   
   my $engine = engine {
-      rule 'valid_name' => instanceof Kvasir::Rule::InputOverThreshold => with_args {
+      rule 'valid_name' => instanceof Kvasir::Rule::InputUnderThreshold => with_args {
           'input_1' => 5,
           'input_2' => -5,
       }

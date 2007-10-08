@@ -8,11 +8,11 @@ use Kvasir::Constants;
 use base qw(Kvasir::Rule);
 
 sub new {
-    my ($pkg, $args) = @_;
+    my ($pkg, %args) = @_;
     
     # Compile regexps
     my %re;
-    while (my ($input, $re) = each %$args) {
+    while (my ($input, $re) = each %args) {
         $re{$input} = $re;
     }
     my $self = bless { %re }, $pkg;

@@ -1,3 +1,11 @@
+[Changes for 0.07 - 2007-10-08]
+
+* with_args argument is now passed as a hash instead of a hash reference to entities
+* Added 'defaults' and 'with_defaults' to declarative interface
+* Added default argument sets to entities
+* Corrected typo (post_hook => posthook) in Kvasir synopsis [DOC]
+* Corrected POD names in InputUnderThreshold to actually match that module [DOC]
+
 [Changes for 0.06 - 2007-10-02]
 
 * Don't install Test::Kvasir::*

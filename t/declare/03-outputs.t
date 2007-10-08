@@ -36,7 +36,7 @@ ok($engine->has_output("output2"));
 $output = $engine->_get_output("output2");
 ok(defined $output);
 is($output->_pkg, "Test::Kvasir::Output");
-is_deeply($output->_args, [{start => 10}]);
+is_deeply($output->_args, [start => 10]);
 
 ok($engine->has_output("output3"));
 $output = $engine->_get_output("output3");

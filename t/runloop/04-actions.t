@@ -14,12 +14,12 @@ my $i = 0;
 
 # Actions
 my $engine = Kvasir::Engine->new();
-$engine->add_rule(rule1 => "Kvasir::Rule::Perl" => sub { return KV_MATCH; });
-$engine->add_rule(rule2 => "Kvasir::Rule::Perl" => sub { return KV_NO_MATCH; });
+$engine->add_rule(rule1 => "Kvasir::Rule::Perl", undef, sub { return KV_MATCH; });
+$engine->add_rule(rule2 => "Kvasir::Rule::Perl", undef, sub { return KV_NO_MATCH; });
 
-$engine->add_action(action1 => "Kvasir::Action::Perl" => sub { ok(++$i == 1); });
-$engine->add_action(action2 => "Kvasir::Action::Perl" => sub { ok(++$i == 2); });
-$engine->add_action(action3 => "Kvasir::Action::Perl" => sub { ok(0); });
+$engine->add_action(action1 => "Kvasir::Action::Perl", undef, sub { ok(++$i == 1); });
+$engine->add_action(action2 => "Kvasir::Action::Perl", undef, sub { ok(++$i == 2); });
+$engine->add_action(action3 => "Kvasir::Action::Perl", undef, sub { ok(0); });
 
 $engine->add_rule_action(rule1 => "action1");
 $engine->add_rule_action(rule1 => "action2");
@@ -30,8 +30,8 @@ $cb->();
 
 # Arguments
 $engine = Kvasir::Engine->new();
-$engine->add_rule(rule1 => "Kvasir::Rule::Perl" => sub { return KV_MATCH; });
-$engine->add_action(action1 => "Kvasir::Action::Perl" => sub { 
+$engine->add_rule(rule1 => "Kvasir::Rule::Perl", undef, sub { return KV_MATCH; });
+$engine->add_action(action1 => "Kvasir::Action::Perl", undef, sub { 
     my ($self, $input, $global, $local) = @_[KV_SELF, KV_INPUT, KV_GLOBAL, KV_LOCAL];
 
     isa_ok($self, "Kvasir::Action::Perl");

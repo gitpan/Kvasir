@@ -7,9 +7,9 @@ use Kvasir::Engine::Common;
 use Kvasir::TypeDecl;
 
 sub add_action {
-	my ($self, $name, $action, @args) = @_;
+	my ($self, $name, $action, $defaults, @args) = @_;
 	$self->_check_add_args('Action', \&has_action, $name, $action);
-	$self->_actions->set($name => Kvasir::TypeDecl->new($action, @args));
+	$self->_actions->set($name => Kvasir::TypeDecl->new($action, $defaults, @args));
 }
 
 sub actions {

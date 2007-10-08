@@ -3,7 +3,7 @@ package Kvasir;
 use strict;
 use warnings;
 
-our $VERSION = "0.06";
+our $VERSION = "0.07";
 
 1;
 __END__
@@ -88,7 +88,7 @@ A fictional spam filter
       
       run "mark_for_deletion" => when qw(is_spam is_from_boss);
       
-      post_hook "process_mail" => does {
+      posthook "process_mail" => does {
           my ($input, $local) = @_[KV_INPUT, KV_LOCAL];
           
           if ($local->get("delete-mail") == 1) {

@@ -7,14 +7,25 @@ use Carp qw(croak);
 use Scalar::Util qw(blessed);
 
 sub new {
-    my ($pkg, $type, @args) = @_;
-    my $self = bless [$type, \@args], $pkg;
+    my ($pkg, $type, $defaults, @args) = @_;
+    $defaults = [] if !defined $defaults;
+    $defaults = [$defaults] if ref $defaults ne 'ARRAY';
+    my $self = bless [$type, $defaults, \@args], $pkg;
     return $self;
 }
 
 sub instantiate {
-    my $self = shift;
-    my $instance = blessed $self->_pkg ? $self->_pkg : $self->_pkg->new(@{$self->_args});
+    my ($self, $engine) = @_;
+    my $instance;
+
+    if (blessed $self->_pkg) {
+        $instance = $self->_pkg;
+    }
+    else {
+        my %defaults = map { %{$engine->get_defaults($_)} } @{$self->_defaults};
+        $instance = $self->_pkg->new(%defaults, @{$self->_args});
+    }
+    
     return $instance;
 }
 
@@ -23,9 +34,14 @@ sub _pkg {
     return $self->[0];
 }
 
-sub _args {
+sub _defaults {
     my $self = shift;
     return $self->[1];
+}
+
+sub _args {
+    my $self = shift;
+    return $self->[2];
 }
 
 1;
@@ -41,13 +57,13 @@ Kvasir::TypeDecl - Helper class for maintaining types used in engines
   
   # Will create a Foo::Bar instance by calling new in Foo::Bar
   my $type1 = Kvasir::TypeDecl->new("Foo::Bar");
-  my $obj1 = $type1->instantiate();
+  my $obj1 = $type1->instantiate($engine);
   
   # Will keep around an already existing reference to an object
   # and return that when instantiating.
   my $existing_obj = get_some_object();
   my $type2 = Kvasir::TypeDecl->new($existing_obj);
-  my $obj2 = $type2->instantiate();
+  my $obj2 = $type2->instantiate($engine);
 
 =head1 INTERFACE
 
@@ -55,10 +71,13 @@ Kvasir::TypeDecl - Helper class for maintaining types used in engines
 
 =over 4
 
-=item new ( TARGET [, ARGS ... ])
+=item new ( TARGET, DEFAULTS [, ARGS ... ])
 
 Wraps a type. If I<TARGET> is an object it will be returned when instantiating the type. If not 
-C<new> will be called on I<TARGET> with any I<ARGS> passed as a list.
+C<new> will be called on I<TARGET> with any I<ARGS> passed as a list. DEFAULTS should be a 
+reference to an array containg the names of default arguments sets in the engine in which 
+we instanciate the type or a single defaults name. If no defaults are requested undef should be 
+passed.
 
 =back
 
@@ -66,9 +85,9 @@ C<new> will be called on I<TARGET> with any I<ARGS> passed as a list.
 
 =over 4
 
-=item instantiate
+=item instantiate ( ENGINE )
 
-Instantiates the type. See C<new> above for semantics.
+Instantiates the type in the engine I<ENGINE>. See C<new> above for semantics.
 
 =back
 

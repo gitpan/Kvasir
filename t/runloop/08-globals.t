@@ -11,7 +11,7 @@ use Kvasir::Engine;
 use Kvasir::Runloop;
 
 my $engine = Kvasir::Engine->new();
-$engine->add_hook(hook1 => "Kvasir::Hook::Perl" => sub { 
+$engine->add_hook(hook1 => "Kvasir::Hook::Perl", undef, sub { 
     my $global = $_[KV_GLOBAL];
     isa_ok($global, "Kvasir::Data");
     is_deeply([$global->keys], []);
@@ -30,7 +30,7 @@ my $data = Kvasir::Data->new();
 $data->set(test => 1);
 
 $engine = Kvasir::Engine->new();
-$engine->add_hook(hook1 => "Kvasir::Hook::Perl" => sub { 
+$engine->add_hook(hook1 => "Kvasir::Hook::Perl", undef, sub { 
     my $global = $_[KV_GLOBAL];
     isa_ok($global, "Kvasir::Data");
     ok($global->exists("test"));

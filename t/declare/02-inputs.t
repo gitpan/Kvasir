@@ -36,7 +36,7 @@ ok($engine->has_input("input2"));
 $input = $engine->_get_input("input2");
 ok(defined $input);
 is($input->_pkg, "Test::Kvasir::Input");
-is_deeply($input->_args, [{start => 10}]);
+is_deeply($input->_args, [start => 10]);
 
 ok($engine->has_input("input3"));
 $input = $engine->_get_input("input3");

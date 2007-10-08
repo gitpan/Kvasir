@@ -36,7 +36,7 @@ ok($engine->has_action("action2"));
 $action = $engine->_get_action("action2");
 ok(defined $action);
 is($action->_pkg, "Test::Kvasir::Action");
-is_deeply($action->_args, [{start => 10}]);
+is_deeply($action->_args, [start => 10]);
 
 ok($engine->has_action("action3"));
 $action = $engine->_get_action("action3");

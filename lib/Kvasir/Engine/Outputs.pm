@@ -7,9 +7,9 @@ use Kvasir::Engine::Common;
 use Kvasir::TypeDecl;
 
 sub add_output {
-	my ($self, $name, $output, @args) = @_;
+	my ($self, $name, $output, $defaults, @args) = @_;
     $self->_check_add_args('Output', \&has_output, $name, $output);
-	$self->_outputs->set($name => Kvasir::TypeDecl->new($output, @args));
+	$self->_outputs->set($name => Kvasir::TypeDecl->new($output, $defaults, @args));
 }
 
 sub outputs {

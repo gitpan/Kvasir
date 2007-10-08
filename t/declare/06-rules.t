@@ -44,7 +44,7 @@ ok($engine->has_rule("rule2"));
 $rule = $engine->_get_rule("rule2");
 ok(defined $rule);
 is($rule->_pkg, "Test::Kvasir::Rule");
-is_deeply($rule->_args, [{start => 10}]);
+is_deeply($rule->_args, [start => 10]);
 
 ok($engine->has_rule("rule3"));
 $rule = $engine->_get_rule("rule3");

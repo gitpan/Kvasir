@@ -8,9 +8,9 @@ use Kvasir::InputHandler;
 use Kvasir::TypeDecl;
 
 sub add_input {
-	my ($self, $name, $input, @args) = @_;
+	my ($self, $name, $input, $defaults, @args) = @_;
 	$self->_check_add_args('Input', \&has_input, $name, $input);
-	$self->_inputs->set($name => Kvasir::TypeDecl->new($input, @args));
+	$self->_inputs->set($name => Kvasir::TypeDecl->new($input, $defaults, @args));
 }
 
 sub inputs {

@@ -12,6 +12,7 @@ use Kvasir::Util qw(is_valid_package_name);
 use Kvasir::Runloop;
 
 use Kvasir::Engine::Actions;
+use Kvasir::Engine::Defaults;
 use Kvasir::Engine::Hooks;
 use Kvasir::Engine::Inputs;
 use Kvasir::Engine::Outputs;
@@ -19,6 +20,7 @@ use Kvasir::Engine::Rules;
 
 use Object::Tiny qw(
 	_actions
+	_defaults
 	_hooks
 	_inputs
 	_outputs
@@ -34,6 +36,7 @@ sub new {
 
 	my $self = bless {
 		_actions        => Kvasir::Data->new(),
+		_defaults       => Kvasir::Data->new(),
 		_hooks	        => Kvasir::Data->new(),
 		_inputs		    => Kvasir::Data->new(),
 		_outputs        => Kvasir::Data->new(),
@@ -103,6 +106,28 @@ Runs the engine.
 
 =back
 
+=head3 Defaults
+
+=over 4
+
+=item defaults
+
+Returns the names of all default sets.
+
+=item has_defaults ( NAME )
+
+Checks if the engine has a default set named I<NAME>.
+
+=item get_defaults ( NAME )
+
+Returns a hash reference with the key/value pairs for the default named I<NAME>.
+
+=item add_defaults ( NAME => DEFAULT )
+
+Registers the hash reference I<DEFAULTS> as I<NAME>.
+
+=back
+
 =head3 Actions
 
 =over 4
@@ -115,9 +140,11 @@ Returns the names of all registered actions.
 
 Checks if the engine has a registered action with the given I<NAME>.
 
-=item add_action ( NAME => ACTION )
+=item add_action ( NAME => ACTION [, DEFAULTS, arguments ... ] )
 
-Registers the I<ACTION> as I<NAME> in the engine.
+Registers the I<ACTION> as I<NAME> in the engine with arguments provided by 
+default argument sets referenced by name in the array reference I<DEFAULTS> and 
+additional arguments.
 
 =back
 
@@ -133,9 +160,11 @@ Returns the names of all registered hooks.
 
 Checks if the engine has a registered hook with the given I<NAME>.
 
-=item add_hook ( NAME => HOOK )
+=item add_hook ( NAME => HOOK [, DEFAULTS, arguments ... ] )
 
-Registers the I<HOOK> as I<NAME> in the engine.
+Registers the I<HOOK> as I<NAME> in the engine with arguments provided by 
+default argument sets referenced by name in the array reference I<DEFAULTS> and 
+additional arguments.
 
 =item add_pre_hook ( NAME )
 
@@ -159,9 +188,11 @@ Returns the names of all registered inputs
 
 Checks if the engine has a registered input with the given I<NAME>.
 
-=item add_input ( NAME => INPUT )
+=item add_input ( NAME => INPUT [, DEFAULTS, arguments ... ] )
 
-Registers the I<INPUT> as I<NAME> in the engine.
+Registers the I<INPUT> as I<NAME> in the engine with arguments provided by 
+default argument sets referenced by name in the array reference I<DEFAULTS> and 
+additional arguments.
 
 =back
 
@@ -177,9 +208,11 @@ Returns the names of all registered outputs
 
 Checks if the engine has a registered output with the given I<NAME>.
 
-=item add_output ( NAME => OUTPUT )
+=item add_output ( NAME => OUTPUT [, DEFAULTS, arguments ... ] )
 
-Registers the I<OUTPUT> as I<NAME> in the engine.
+Registers the I<OUTPUT> as I<NAME> in the engine with arguments provided by 
+default argument sets referenced by name in the array reference I<DEFAULTS> and 
+additional arguments.
 
 =back
 
@@ -195,9 +228,11 @@ Returns the names of all registered rules
 
 Checks if the engine has a registered rule with the given I<NAME>.
 
-=item add_rule ( NAME => OUTPUT )
+=item add_rule ( NAME => OUTPUT [, DEFAULTS, arguments ... ] )
 
-Registers the I<OUTPUT> as I<NAME> in the engine.
+Registers the I<OUTPUT> as I<NAME> in the engine with arguments provided by 
+default argument sets referenced by name in the array reference I<DEFAULTS> and 
+additional arguments.
 
 =item add_rule_action ( NAME => ACTION )
 

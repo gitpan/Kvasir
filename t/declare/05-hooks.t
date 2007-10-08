@@ -49,7 +49,7 @@ ok($engine->has_hook("hook2"));
 $hook = $engine->_get_hook("hook2");
 ok(defined $hook);
 is($hook->_pkg, "Test::Kvasir::Hook");
-is_deeply($hook->_args, [{start => 10}]);
+is_deeply($hook->_args, [start => 10]);
 
 ok($engine->has_hook("hook3"));
 $hook = $engine->_get_hook("hook3");
@@ -74,7 +74,7 @@ ok($engine->has_hook("hook6"));
 $hook = $engine->_get_hook("hook6");
 ok(defined $hook);
 is($hook->_pkg, "Test::Kvasir::Hook");
-is_deeply($hook->_args, [{start => 10}]);
+is_deeply($hook->_args, [start => 10]);
 
 ok($engine->has_hook("hook7"));
 $hook = $engine->_get_hook("hook7");

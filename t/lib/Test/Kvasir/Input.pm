@@ -8,9 +8,8 @@ use Carp qw(croak);
 use base qw(Kvasir::Input);
 
 sub new {
-    my ($pkg, $args) = @_;
-    $args = $args || {};
-    my $self = bless { %$args }, $pkg;
+    my ($pkg, %args) = @_;
+    my $self = bless { %args }, $pkg;
     return $self;
 }
 
